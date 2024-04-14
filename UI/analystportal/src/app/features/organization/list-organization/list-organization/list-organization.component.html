@@ -1,0 +1,26 @@
+<div class="container">
+    <h1 class="mt-3">Organization List</h1>
+    <div class="d-flex justify-content-end mt-3">
+        <a [routerLink]="['/admin/organizations/add']" class="btn btn-primary">Add Organization</a>
+    </div>
+    <ng-container *ngIf="organizations$ | async as organizations">
+        <table class="table table-bordered mt-3">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Logo Url</th>
+                    <th> </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let organization of organizations">
+                    <td>{{organization.name}}</td>
+                    <td>{{organization.logoUrl}}</td>
+                    <td>
+                        <a class="btn btn-light" [routerLink]="['/admin/organizations', organization.id]">Edit</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </ng-container>
+</div>

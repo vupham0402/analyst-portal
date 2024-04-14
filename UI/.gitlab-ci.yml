@@ -1,0 +1,43 @@
+stages:
+  - build
+  - deploy 
+
+variables:
+  IMAGE_NAME: analystportalui
+  IMAGE_TAG: latest
+
+build_and_push_to_acr:
+  stage: build
+  image: docker:latest
+  services:
+    - docker:dind
+  before_script:
+    - echo "Logging into Azure Container Registry..."
+    - echo $ACR_PASSWORD | docker login $ACR_LOGIN_SERVER -u $ACR_USERNAME --password-stdin
+  script:
+    - cd analystportal
+    - echo "Building Docker image..."
+    - docker build -t $ACR_LOGIN_SERVER/$IMAGE_NAME:$IMAGE_TAG --progress=plain .
+    - echo "Pushing Docker image to ACR..."
+    - docker push $ACR_LOGIN_SERVER/$IMAGE_NAME:$IMAGE_TAG
+  after_script:
+    - echo "Docker image $ACR_LOGIN_SERVER/$IMAGE_NAME:$IMAGE_TAG pushed successfully."
+  only:
+    - main
+
+deploy_to_aks:
+  stage: deploy
+  image: mcr.microsoft.com/azure-cli
+  script:
+    - echo "Set up Kubernetes deployment"
+    - cd kubernetes
+    - az login --service-principal -u $AZURE_APP_ID -p $AZURE_APP_PASSWORD --tenant $AZURE_TENANT
+    - az aks get-credentials --resource-group Analyst-Portal-RG --name cluster-regular-marten --file ./kubeconfig
+    # Install kubectl using az cli
+    - az aks install-cli
+    - kubectl apply -f deployment.yml --kubeconfig ./kubeconfig
+    - kubectl apply -f service.yml --kubeconfig ./kubeconfig
+    - echo "Service External IP:"
+    - kubectl get svc analystportal-ui-service --kubeconfig ./kubeconfig -o=jsonpath='{.status.loadBalancer.ingress[0].ip}' && echo
+  only:
+    - main

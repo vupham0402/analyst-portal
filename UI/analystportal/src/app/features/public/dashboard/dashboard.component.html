@@ -1,0 +1,117 @@
+<div class="container-fluid my-4 bordered">
+    <ng-container *ngIf="flag === true; else noChart">
+        <div class="row">
+            <div class="col-md-2">
+                <div class="sticky-sidebar">
+                    <!-- Left Column: Dropdowns -->
+                    <div class="selection my-3">
+                        <ng-container *ngIf="organizationName === 'EyeProGPO'; else showOne">
+                            <ng-container *ngIf="organizations$ | async as organizations">
+                                <select class="form-select" id="orgSelection" name="orgSelection" [(ngModel)]="selectedOrganizationId" (ngModelChange)="onOrganizationChange()">
+                                    <option *ngFor="let organization of organizations" [value]="organization.id" [hidden]="organization.name === 'EyeProGPO' || organization.name === 'Riot'">{{organization.name}}</option>
+                                </select>
+                            </ng-container>
+                        </ng-container>
+                        <ng-template #showOne>
+                            <select class="form-select" id="orgSelection" [(ngModel)]="selectedOrganizationId" name="orgSelection">
+                                <option [value]="selectedOrganizationId">{{organizationName}}</option>
+                            </select>
+                        </ng-template>
+                        <br>
+                        <img [src]="logoUrl" width="300" height="120" alt="No Logo"/>
+                        <br>
+                    </div>
+                    <div class="selection my-3">
+                        <select class="form-select" id="yearSelection" name="yearSelection" [(ngModel)]="selectedYear" (ngModelChange)="onYearChange()">
+                            <option value="0" selected>Years</option>
+                            <ng-container *ngIf="years$ | async as years">
+                                <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+                            </ng-container>
+                        </select>
+                    </div> 
+                </div>
+            </div>
+            <div class="col-md-10">
+                <!-- Right Column: Chart -->
+                <div class="chart-container my-3 bordered">
+                    <ng-container *ngIf="lineChartData$ | async as lineChartData">
+                        <h3>Total Sales by Year/Month</h3>
+                            <div style="display: flex; justify-content: center; margin: 20px;">
+                                <ngx-charts-area-chart
+                                    [view]="[700, 500]"
+                                    [legend]="false"
+                                    [showXAxisLabel]="true"
+                                    [showYAxisLabel]="true"
+                                    xAxisLabel="Year/Month"
+                                    yAxisLabel="Total Sales ($)"
+                                    [xAxis]="true"
+                                    [yAxis]="true"
+                                    [timeline]="true"
+                                    [autoScale]="true"
+                                    [results]="lineChartData">
+                                </ngx-charts-area-chart>
+                            </div>
+                    </ng-container>                   
+                </div>
+                <div class="chart-container my-3 bordered">
+                    <ng-container *ngIf="barChartData$ | async as barChartData; else noChartData">
+                        <h3>Total Sales by Category</h3>
+                        <div style="display: flex; justify-content: center; margin: 20px;">
+                        <ngx-charts-bar-vertical-2d
+                            [view]="[700, 500]"
+                            [animations]="true"
+                            [showXAxisLabel]="true"
+                            [showYAxisLabel]="true"
+                            xAxisLabel="Region"
+                            yAxisLabel="Total Sales ($)"
+                            [xAxis]="true"
+                            [yAxis]="true"
+                            [legend]="true"
+                            legendTitle="Category"
+                            [results]="barChartData">
+                        </ngx-charts-bar-vertical-2d>
+                        </div>
+                    </ng-container>
+                    <ng-template #noChartData></ng-template>  
+                </div>
+                <div class="chart-container my-3 bordered">
+                    <ng-container *ngIf="pieChartData$ | async as pieChartData; else noChartData">
+                        <h3>Total Sales by Region</h3>
+                        <div style="display: flex; justify-content: center; margin: 20px;">
+                        <ngx-charts-pie-grid
+                            [view]="[800, 500]"
+                            [animations]="true"
+                            xAxisLabel="Region"
+                            yAxisLabel="Total Sales ($)"
+                            legendTitle="Region"
+                            [results]="pieChartData">
+                        </ngx-charts-pie-grid>
+                        </div>
+                    </ng-container>
+                    <ng-template #noChartData></ng-template>  
+                </div>
+                <div class="chart-container my-3 bordered">
+                    <ng-container *ngIf="treeChartData$ | async as treeChartData; else noChartData">
+                        <h3>Total Sales by State & City</h3>
+                        <p>(Please click on a state to show cities.)</p>
+                        <p>(Please click on a city to show states again.)</p>
+                        <!-- {{console.log(heatChartData)}}; -->
+                        <div style="display: flex; justify-content: center; margin: 20px;">
+                        <ngx-charts-tree-map
+                            [view]="[700, 500]"
+                            [animations]="true"
+                            [results]="treeChartData"
+                            (select)="onSelect($event)">
+                        </ngx-charts-tree-map>
+                        </div>
+                    </ng-container>
+                    <ng-template #noChartData></ng-template>    
+                </div>
+            </div>
+        </div>
+    </ng-container>
+    <ng-template #noChart>
+        <h2>There are no charts for your organization!</h2>
+    </ng-template>
+</div>
+    

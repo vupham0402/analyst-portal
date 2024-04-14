@@ -1,0 +1,17 @@
+/* You can add global styles to this file, and also import other style files */
+.page-item {
+    cursor: pointer;
+}
+.bordered {
+    border: 1px solid #000000; /* Bootstrap's border color */
+}
+.chart-container {
+    text-align: center;
+}
+.sticky-sidebar {
+    position: sticky;
+    top: 2%;
+}
+
+  
+  

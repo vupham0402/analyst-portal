@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "X2bIq7SzWJ8+ds1VGQ5Zu+1rS8ZX4VZ2ioaAUmVWRNE=",
+  "Source": "AnalystPortal.API",
+  "BasePath": "_content/AnalystPortal.API",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

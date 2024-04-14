@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: analystportal-api-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: analystportal-api
+  template:
+    metadata:
+      labels:
+        app: analystportal-api
+    spec:
+      containers:
+      - name: analystportal-api-container
+        image: analystportalacr.azurecr.io/analystportalapi:latest
+        ports:
+        - containerPort: 80
+        env:
+          - name: ConnectionStringSql
+            valueFrom:
+              secretKeyRef:
+                name: app-secrets
+                key: ConnectionStringSql
+          - name: Jwt__Key
+            valueFrom:
+              secretKeyRef:
+                name: app-secrets
+                key: JwtKey
+          - name: Jwt__Issuer
+            valueFrom:
+              secretKeyRef:
+                name: app-secrets
+                key: JwtIssuer
+          - name: Jwt__Audience
+            valueFrom:
+              secretKeyRef:
+                name: app-secrets
+                key: JwtAudience

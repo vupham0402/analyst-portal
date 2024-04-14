@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: analystportal-ui-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: analystportal-ui
+  template:
+    metadata:
+      labels:
+        app: analystportal-ui
+    spec:
+      containers:
+      - name: analystportal-ui-container
+        image: analystportalacr.azurecr.io/analystportalui:latest
+        ports:
+        - containerPort: 80
+       

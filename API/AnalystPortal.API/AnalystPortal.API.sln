@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34622.214
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnalystPortal.API", "AnalystPortal.API\AnalystPortal.API.csproj", "{68DCECA1-853D-4FCB-89F7-D263E3D0F2AD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{68DCECA1-853D-4FCB-89F7-D263E3D0F2AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68DCECA1-853D-4FCB-89F7-D263E3D0F2AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68DCECA1-853D-4FCB-89F7-D263E3D0F2AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68DCECA1-853D-4FCB-89F7-D263E3D0F2AD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4E10A580-4BE2-4F33-A35D-D614D368A61B}
+	EndGlobalSection
+EndGlobal

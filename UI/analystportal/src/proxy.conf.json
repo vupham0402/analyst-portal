@@ -1,0 +1,7 @@
+{
+    "/*": {
+        "target": "http://52.148.150.240",
+        "secure": false,
+        "logLevel": "debug"
+    }
+}

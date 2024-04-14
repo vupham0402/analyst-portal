@@ -1,0 +1,7 @@
+.vs
+.API.sln
+.terraform
+.terraform.lock.hcl
+.tfplan
+.tfstate
+.tfstate.backup

@@ -1,0 +1,112 @@
+<div class="container">
+    <h1 class="mt-3">Sales List</h1>
+    <div class="d-flex justify-content-start mt-3" style="width: 200px;">
+        <ng-container *ngIf="organizations$ | async as organizations">
+            <select class="form-select" id="orgSelection" (change)="onOrganizationSelect($event)">
+                <option value="">Select Organization</option>
+                <option *ngFor="let organization of organizations" [value]="organization.id" [hidden]="organization.name === 'EyeProGPO'">{{organization.name}}</option>
+            </select>
+        </ng-container>
+    </div>
+    <div class="d-flex justify-content-start mt-3" style="width: 200px;">
+        <ng-container *ngIf="categories$ | async as categories">
+            <select class="form-select" id="catSelection" (change)="onCategorySelect($event)">
+                <option value="">Select Category</option>
+                <option *ngFor="let category of categories" [value]="category.id">{{category.categoryName}}</option>
+            </select>
+        </ng-container>
+    </div>
+    <div class="d-flex justify-content-start mt-3" style="width: 400px;">
+        <input type="text" id="productNameInput" class="form-control" placeholder="Product Name" (input)="onProductNameInput($event)">
+        <button class="btn btn-warning" style="margin-left: 10px;" (click)="loadSales()">Search</button>
+        <button class="btn btn-warning" style="margin-left: 10px;" (click)="clear()">Clear</button>
+    </div>
+    <div class="d-flex justify-content-start mt-3">
+        <button class="btn btn-secondary" (click)="reset()">Reset</button>
+    </div>
+    <div class="d-flex justify-content-end mt-3">
+        <a [routerLink]="['/admin/sales/add']" class="btn btn-primary">Add Sales</a>
+    </div>
+    <ng-container *ngIf="sales$ | async as sales">
+        <table class="table table-bordered mt-3">
+            <thead>
+                <tr>
+                    <th>Order Date</th>
+                    <th>Category</th>
+                    <th>Product Name</th>
+                    <th style="width: 150px;">
+                        Total
+                        <span>
+                            <span>
+                                <button class="btn btn-light" (click)="sort('total', 'asc')"><i class="bi bi-arrow-up"></i></button>
+                            </span>
+                            <span>
+                                <button class="btn btn-light" (click)="sort('total', 'desc')"><i class="bi bi-arrow-down"></i></button>
+                            </span>
+                        </span>
+                    </th>
+                    <th>City</th>
+                    <th>State</th>
+                    <th>Region</th>
+                    <th>Organization</th>
+                    <th> </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let eachSales of sales">
+                    <td>{{eachSales.orderDate | date: 'MM/dd/yy'}}</td>
+                    <td>{{eachSales.categoryName}}</td>
+                    <td>{{eachSales.productName}}</td>
+                    <td>{{eachSales.total | currency}}</td>
+                    <td>{{eachSales.city}}</td>
+                    <td>{{eachSales.state}}</td>
+                    <td>{{eachSales.region}}</td>
+                    <td>
+                        <span *ngFor="let organization of eachSales.organizations">
+                          <span class="badge bg-secondary me-2">{{organization.name}}</span>
+                        </span>
+                      </td>
+                    <td>
+                        <a class="btn btn-light" [routerLink]="['/admin/sales', eachSales.id]">Edit</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-start">
+                <!-- First Button -->
+                <li class="page-item" [class.disabled]="pageNumber === 1">
+                    <a class="page-link" [class.active]="pageNumber === 1" (click)="goToPage(1)">First</a>
+                </li>
+
+                <!-- Previous Button -->
+                <li class="page-item" [class.disabled]="pageNumber === 1">
+                    <a class="page-link" (click)="previousPage()">Previous</a>
+                </li>
+        
+                <!-- Page Numbers -->
+                <ng-container *ngFor="let item of getPageRange(); let i = index">
+                    <li class="page-item">
+                        <a class="page-link" (click)="goToPage(item)" [class.active]="item === pageNumber">{{item}}</a>
+                    </li>
+                </ng-container>
+        
+                <!-- Next Button -->
+                <li class="page-item" [class.disabled]="pageNumber === totalPages">
+                    <a class="page-link" (click)="nextPage()">Next</a>
+                </li>
+
+                <!-- Last Button -->
+                <li class="page-item" [class.disabled]="pageNumber === totalPages">
+                    <a class="page-link" [class.active]="pageNumber === totalPages" (click)="goToPage(totalPages)">Last</a>
+                </li>
+
+                <!-- Input Field for Page Number -->
+                <li class="page-item" style="display: flex;">
+                    <input type="number" class="form-control" [(ngModel)]="inputPage" placeholder="Page" style="width: 80px; margin-left: 10px;">
+                    <button class="btn btn-primary" (click)="goToInputPage()" style="margin-left: 10px;">Go</button>
+                </li>
+            </ul>
+        </nav>        
+    </ng-container>
+</div>
